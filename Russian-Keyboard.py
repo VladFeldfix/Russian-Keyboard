@@ -2,6 +2,9 @@ import keyboard
 import tkinter
 from tkinter import *
 import os
+from threading import *
+
+
 class RussianKeboard:
     def __init__(self):
         # set global variables
@@ -13,14 +16,17 @@ class RussianKeboard:
         self.root.title("Russian Keyboard v1.0")
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.columnconfigure(0,weight=1)
+        self.root.rowconfigure(0,weight=1)
+        self.root.wm_attributes("-topmost" , 2)
+        
         #self.root.iconbitmap("favicon.ico")
 
         # draw main menu
-        main_frame = Frame(self.root)
-        main_frame.grid(row=0,column=0)
-        btn1 = Button(main_frame, text = "btn", command = self.type_it)
-        btn1.grid(row=0,column=0,sticky=NW)
-
+        main_frame = Frame(self.root, bg='red', padx=5, pady=5, takefocus=0)
+        main_frame.grid(row=0,column=0, sticky=NSEW)
+        btn1 = Button(main_frame, text = "btn", command = lambda:self.type_it("Ё"), width=2, height=1, takefocus=0)
+        btn1.grid(row=0, column=0, sticky="news")
+        
         """
         menuFrame = Frame(self.root)
         menuFrame.grid(column=0, row=0, sticky="news")
@@ -39,9 +45,12 @@ class RussianKeboard:
         """
         # run GUI
         self.root.mainloop()
-    
-    def type_it(self):
-        pass
+        
+
+    def type_it(self, char):
+        # Call work function 
+        self.root.wm_attributes('-topmost', False)
+        keyboard.write(char)
 
     def exit(self):
         self.root.destroy()
